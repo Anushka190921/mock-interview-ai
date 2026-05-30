@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mock Interview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎯 AI Mock Interview</h1>
+        <p class="subtitle">Practice interviews powered by AI — get real feedback instantly</p>
+
+        <form action="/interview" method="POST">
+            <label for="role">Select Job Role:</label>
+            <select name="role" id="role" required>
+                <option value="">-- Choose a role --</option>
+                <option value="Software Engineer">Software Engineer</option>
+                <option value="Data Scientist">Data Scientist</option>
+                <option value="Machine Learning Engineer">ML Engineer</option>
+                <option value="Product Manager">Product Manager</option>
+                <option value="Frontend Developer">Frontend Developer</option>
+                <option value="Backend Developer">Backend Developer</option>
+                <option value="DevOps Engineer">DevOps Engineer</option>
+            </select>
+
+            <button type="submit">Start Interview →</button>
+        </form>
+    </div>
+
+</body>
+</html>

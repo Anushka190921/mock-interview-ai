@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview - {{ role }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎤 Interview for {{ role }}</h1>
+        <p class="subtitle">Choose a question, write your answer, and get AI feedback</p>
+
+        <form action="/feedback" method="POST">
+
+            <label for="question">Select a Question:</label>
+            <select name="question" id="question" required>
+                <option value="">-- Choose a question --</option>
+                {% for question in questions %}
+                    <option value="{{ question }}">{{ question }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="answer">Your Answer:</label>
+            <textarea 
+                name="answer" 
+                id="answer" 
+                rows="8" 
+                placeholder="Type your answer here... be as detailed as possible"
+                required>
+            </textarea>
+
+            <button type="submit">Get AI Feedback →</button>
+
+        </form>
+
+        <a href="/" class="back-link">← Choose different role</a>
+    </div>
+
+</body>
+</html>
