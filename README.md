@@ -6,7 +6,7 @@ Select a role → get AI-generated questions → answer them → receive instant
 
 
 ## 🚀 Live Demo
-> Coming soon — deploying on Render
+> 🔗 [https://mock-interview-ai-1kjd.onrender.com](https://mock-interview-ai-1kjd.onrender.com)
 
 
 
