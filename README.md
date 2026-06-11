@@ -84,13 +84,13 @@ mock-interview-ai/
 ## 📸 Screenshots
 
 ### Home Page
-![Home](screenshots/home page.png)
+![Home](screenshots/home.png)
 
 ### Interview Page
-![Interview](screenshots/interview page.png)
+![Interview](screenshots/interview.png)
 
 ### Feedback Page
-![Feedback](screenshots/feedback page.png)
+![Feedback](screenshots/feedback.png)
 
 
 ## 👩‍💻 Author
