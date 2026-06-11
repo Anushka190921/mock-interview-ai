@@ -81,6 +81,17 @@ mock-interview-ai/
 6. Results displayed on the feedback page
 
 
+## 📸 Screenshots
+
+### Home Page
+![Home](screenshots/home page.png)
+
+### Interview Page
+![Interview](screenshots/interview page.png)
+
+### Feedback Page
+![Feedback](screenshots/feedback page.png)
+
 
 ## 👩‍💻 Author
 Anushka — BTech CSE (AI), 3rd Year  
