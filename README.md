@@ -81,6 +81,27 @@ mock-interview-ai/
 6. Results displayed on the feedback page
 
 
+
+## 🚧 Challenges & Learnings
+
+### 1. Model Deprecation
+- Faced `BadRequestError` when Groq deprecated `llama3-8b-8192`
+- Fixed by migrating to `llama-3.3-70b-versatile` — learned that API dependencies need regular maintenance
+
+### 2. Prompt Engineering
+- Initial prompts gave unstructured responses that were hard to display
+- Solved by designing strict output formats with labeled sections (SCORE, STRENGTHS, IMPROVEMENTS)
+
+### 3. Session Management
+- Passing data between Flask routes required understanding of server-side sessions
+- Used Flask's `session` object to persist role and questions across pages
+
+### 4. First Time Deployment
+- Learned difference between development server and production server
+- Configured Gunicorn + Render with environment variables for secure API key management
+
+
+
 ## 📸 Screenshots
 
 ### Home Page
