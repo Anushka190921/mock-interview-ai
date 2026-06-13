@@ -19,7 +19,8 @@ def index():
 @app.route("/interview", methods=["POST"])
 def interview():
     role = request.form.get("role")
-    prompt = get_question_prompt(role)
+    difficulty = request.form.get("difficulty")
+    prompt = get_question_prompt(role, difficulty)
     response = call_llm(prompt)
 
     # Split response into individual questions
@@ -30,23 +31,26 @@ def interview():
             questions.append(line)
 
     session["role"] = role
+    session["difficulty"] = difficulty
     session["questions"] = questions
 
-    return render_template("interview.html", role=role, questions=questions)
+    return render_template("interview.html", role=role, difficulty=difficulty, questions=questions)
 
 
 # ─── Route 3: Evaluate Answer ─────────────────────────────────────
 @app.route("/feedback", methods=["POST"])
 def feedback():
     role = session.get("role")
+    difficulty = session.get("difficulty")
     question = request.form.get("question")
     answer = request.form.get("answer")
 
-    prompt = get_evaluation_prompt(role, question, answer)
+    prompt = get_evaluation_prompt(role, difficulty, question, answer)
     evaluation = call_llm(prompt)
 
-    return render_template("feedback.html", 
+    return render_template("feedback.html",
                            role=role,
+                           difficulty=difficulty,
                            question=question,
                            answer=answer,
                            evaluation=evaluation)
