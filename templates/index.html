@@ -14,16 +14,32 @@
 
         <form action="/interview" method="POST">
             <label for="role">Select Job Role:</label>
-            <select name="role" id="role" required>
-                <option value="">-- Choose a role --</option>
-                <option value="Software Engineer">Software Engineer</option>
-                <option value="Data Scientist">Data Scientist</option>
-                <option value="Machine Learning Engineer">ML Engineer</option>
-                <option value="Product Manager">Product Manager</option>
-                <option value="Frontend Developer">Frontend Developer</option>
-                <option value="Backend Developer">Backend Developer</option>
-                <option value="DevOps Engineer">DevOps Engineer</option>
-            </select>
+        <select name="role" id="role" required>
+            <option value="">-- Choose a role --</option>
+            <option value="Software Engineer">Software Engineer</option>
+            <option value="Data Scientist">Data Scientist</option>
+            <option value="Machine Learning Engineer">ML Engineer</option>
+            <option value="Product Manager">Product Manager</option>
+            <option value="Frontend Developer">Frontend Developer</option>
+            <option value="Backend Developer">Backend Developer</option>
+            <option value="DevOps Engineer">DevOps Engineer</option>
+            <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+            <option value="Cloud Engineer">Cloud Engineer</option>
+            <option value="UI/UX Designer">UI/UX Designer</option>
+            <option value="Business Analyst">Business Analyst</option>
+            <option value="QA Engineer">QA Engineer</option>
+            <option value="Data Engineer">Data Engineer</option>
+            <option value="AI Research Scientist">AI Research Scientist</option>
+            <option value="Full Stack Developer">Full Stack Developer</option>
+</select>
+
+<label for="difficulty">Select Difficulty Level:</label>
+<select name="difficulty" id="difficulty" required>
+    <option value="">-- Choose difficulty --</option>
+    <option value="Fresher">Fresher (0-1 years)</option>
+    <option value="Mid">Mid Level (2-4 years)</option>
+    <option value="Senior">Senior (5+ years)</option>
+</select>
 
             <button type="submit">Start Interview →</button>
         </form>
