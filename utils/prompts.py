@@ -1,26 +1,33 @@
-def get_question_prompt(role, num_questions=5):
+def get_question_prompt(role, difficulty, num_questions=5):
     return f"""
 You are an expert technical interviewer.
 Generate {num_questions} interview questions for a {role} position.
 
+Difficulty Level: {difficulty}
+- Fresher: Basic concepts, fundamental knowledge, simple scenarios
+- Mid: Intermediate concepts, some experience required, real-world scenarios
+- Senior: Advanced concepts, leadership, system design, complex scenarios
+
 Rules:
-- Mix easy, medium and hard questions
-- Include both technical and behavioral questions
+- Generate questions specifically for {difficulty} level
+- Mix technical and behavioral questions
 - Number each question (1. 2. 3. etc.)
 - Only return the questions, nothing else
 
 Role: {role}
+Level: {difficulty}
 """
 
-def get_evaluation_prompt(role, question, answer):
+def get_evaluation_prompt(role, difficulty, question, answer):
     return f"""
-You are an expert technical interviewer evaluating a candidate's answer.
+You are an expert technical interviewer evaluating a {difficulty} level candidate.
 
-Role they are applying for: {role}
+Role: {role}
+Level: {difficulty}
 Interview Question: {question}
 Candidate's Answer: {answer}
 
-Evaluate the answer and respond in this EXACT format:
+Evaluate the answer considering the {difficulty} level expectations and respond in this EXACT format:
 
 SCORE: (give a score out of 10)
 
@@ -31,5 +38,5 @@ IMPROVEMENTS:
 (2-3 specific things they should improve)
 
 SAMPLE ANSWER:
-(write an ideal answer for this question)
+(write an ideal answer for a {difficulty} level candidate)
 """
