@@ -11,7 +11,8 @@ Select a role → get AI-generated questions → answer them → receive instant
 
 
 ## 💡 Features
-- 7 job roles supported (SDE, ML Engineer, Data Scientist, PM and more)
+- - 15 job roles supported (SDE, ML Engineer, Data Scientist, DevOps, and more)
+- 3 difficulty levels (Fresher, Mid, Senior)
 - AI generates 5 role-specific interview questions per session
 - Evaluates your answer and gives a score out of 10
 - Shows strengths, improvements, and an ideal sample answer
