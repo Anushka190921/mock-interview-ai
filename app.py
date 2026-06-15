@@ -20,10 +20,10 @@ def index():
 def interview():
     role = request.form.get("role")
     difficulty = request.form.get("difficulty")
-    prompt = get_question_prompt(role, difficulty)
+    company = request.form.get("company")
+    prompt = get_question_prompt(role, difficulty, company)
     response = call_llm(prompt)
 
-    # Split response into individual questions
     questions = []
     for line in response.strip().split("\n"):
         line = line.strip()
@@ -32,9 +32,10 @@ def interview():
 
     session["role"] = role
     session["difficulty"] = difficulty
+    session["company"] = company
     session["questions"] = questions
 
-    return render_template("interview.html", role=role, difficulty=difficulty, questions=questions)
+    return render_template("interview.html", role=role, difficulty=difficulty, company=company, questions=questions)
 
 
 # ─── Route 3: Evaluate Answer ─────────────────────────────────────
@@ -42,15 +43,17 @@ def interview():
 def feedback():
     role = session.get("role")
     difficulty = session.get("difficulty")
+    company = session.get("company")
     question = request.form.get("question")
     answer = request.form.get("answer")
 
-    prompt = get_evaluation_prompt(role, difficulty, question, answer)
+    prompt = get_evaluation_prompt(role, difficulty, company, question, answer)
     evaluation = call_llm(prompt)
 
     return render_template("feedback.html",
                            role=role,
                            difficulty=difficulty,
+                           company=company,
                            question=question,
                            answer=answer,
                            evaluation=evaluation)
