@@ -54,3 +54,17 @@ IMPROVEMENTS:
 SAMPLE ANSWER:
 (write an ideal answer that would impress {company} interviewers)
 """
+
+def get_followup_prompt(role, difficulty, company, question, answer):
+    return f"""
+You are an expert technical interviewer at {company}.
+The candidate is interviewing for a {role} position at {difficulty} level.
+
+They just answered this question:
+Question: {question}
+Their Answer: {answer}
+
+Generate exactly 1 smart follow-up question based on their answer.
+The follow-up should dig deeper into something they said or missed.
+Just return the follow-up question, nothing else.
+"""
