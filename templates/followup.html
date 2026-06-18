@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Follow-up Question</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>🔄 Follow-up Question</h1>
+        <p class="subtitle">{{ company }} • {{ role }} • {{ difficulty }}</p>
+
+        <div class="card">
+            <h3>❓ Original Question</h3>
+            <p>{{ original_question }}</p>
+        </div>
+
+        <div class="card">
+            <h3>💬 Your Answer</h3>
+            <p>{{ original_answer }}</p>
+        </div>
+
+        <div class="card" style="border-color: #6c63ff;">
+            <h3>🎯 Interviewer Follow-up</h3>
+            <p><strong>{{ followup_question }}</strong></p>
+        </div>
+
+        <form action="/feedback" method="POST">
+            <input type="hidden" name="question" value="{{ original_question }}">
+            <input type="hidden" name="answer" value="{{ original_answer }}">
+            <input type="hidden" name="followup_question" value="{{ followup_question }}">
+
+            <label for="followup_answer">Your Answer to Follow-up:</label>
+            <textarea
+                name="followup_answer"
+                id="followup_answer"
+                rows="6"
+                placeholder="Answer the follow-up question here..."
+                required>
+            </textarea>
+
+            <button type="submit">Get Final Feedback →</button>
+        </form>
+
+        <a href="/interview" class="back-link">← Skip follow-up</a>
+    </div>
+
+</body>
+</html>
