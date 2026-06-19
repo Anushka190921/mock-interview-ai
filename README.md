@@ -47,6 +47,7 @@ with scores, strengths, improvements, and ideal sample answers.
 | Answer Evaluation with Score /10 | ✅ Done |
 | Strengths & Improvements Feedback | ✅ Done |
 | Ideal Sample Answer | ✅ Done |
+| Smart Follow-up Questions | ✅ Done |
 | Live Deployment on Render | ✅ Done |
 | Voice Input | ⏳ Coming Soon |
 | Interview History | ⏳ Coming Soon |
