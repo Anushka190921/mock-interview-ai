@@ -16,8 +16,16 @@ def index():
 
 
 # ─── Route 2: Generate Questions ─────────────────────────────────
-@app.route("/interview", methods=["POST"])
+@app.route("/interview", methods=["GET", "POST"])
 def interview():
+    if request.method == "GET":
+        # Re-use previous session data
+        role = session.get("role")
+        difficulty = session.get("difficulty")
+        company = session.get("company")
+        questions = session.get("questions")
+        return render_template("interview.html", role=role, difficulty=difficulty, company=company, questions=questions)
+
     role = request.form.get("role")
     difficulty = request.form.get("difficulty")
     company = request.form.get("company")
