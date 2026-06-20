@@ -131,6 +131,24 @@ Follow-up Answer: {followup_answer}
                            evaluation=evaluation)
 
 
+
+# ─── Route 5: View Interview History ──────────────────────────────
+@app.route("/history")
+def history():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM interview_history ORDER BY created_at DESC")
+        records = cursor.fetchall()
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        print("Database error:", e)
+        records = []
+
+    return render_template("history.html", records=records)
+
+
 # ─── Run App ──────────────────────────────────────────────────────
 if __name__ == "__main__":
     app.run(debug=True)
