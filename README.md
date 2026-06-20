@@ -49,6 +49,7 @@ with scores, strengths, improvements, and ideal sample answers.
 | Ideal Sample Answer | ✅ Done |
 | Smart Follow-up Questions | ✅ Done |
 | Live Deployment on Render | ✅ Done |
+| Interview History (MySQL) | ✅ Done |
 | Voice Input | ⏳ Coming Soon |
 | Interview History | ⏳ Coming Soon |
 | PDF Report Download | ⏳ Coming Soon |
@@ -64,6 +65,7 @@ with scores, strengths, improvements, and ideal sample answers.
 | Frontend | HTML, CSS, JavaScript |
 | Deployment | Render + Gunicorn |
 | Security | python-dotenv |
+| Database | MySQL |
 
 ---
 
