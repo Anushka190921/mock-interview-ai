@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session
-from utils.llm import call_llm
+from utils.llm import call_llm, get_db_connection
 from utils.prompts import get_question_prompt, get_evaluation_prompt
 from dotenv import load_dotenv
 import os
@@ -74,6 +74,7 @@ def followup():
 
 
 
+
 # ─── Route 4: Evaluate Answer ─────────────────────────────────────
 @app.route("/feedback", methods=["POST"])
 def feedback():
@@ -85,7 +86,6 @@ def feedback():
     followup_question = request.form.get("followup_question", "")
     followup_answer = request.form.get("followup_answer", "")
 
-    # Build combined evaluation
     combined_answer = answer
     if followup_answer:
         combined_answer = f"""
@@ -97,6 +97,28 @@ Follow-up Answer: {followup_answer}
 
     prompt = get_evaluation_prompt(role, difficulty, company, question, combined_answer)
     evaluation = call_llm(prompt)
+
+    # Extract score from evaluation
+    score = "N/A"
+    for line in evaluation.split("\n"):
+        if line.strip().startswith("SCORE:"):
+            score = line.strip().replace("SCORE:", "").strip()
+            break
+
+    # Save to database
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO interview_history
+            (role, difficulty, company, question, answer, followup_question, followup_answer, score, evaluation)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (role, difficulty, company, question, answer, followup_question, followup_answer, score, evaluation))
+        conn.commit()
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        print("Database error:", e)
 
     return render_template("feedback.html",
                            role=role,

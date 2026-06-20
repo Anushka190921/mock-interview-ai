@@ -16,3 +16,14 @@ def call_llm(prompt):
         max_tokens=1024
     )
     return response.choices[0].message.content
+
+
+import mysql.connector
+
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password=os.getenv("MYSQL_PASSWORD"),
+        database="mock_interview_db"
+    )
