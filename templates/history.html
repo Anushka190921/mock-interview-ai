@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="container" style="max-width: 900px;">
+        <h1>📊 Interview History</h1>
+        <p class="subtitle">Track your progress across all practice sessions</p>
+
+        {% if records|length == 0 %}
+            <p>No interview history yet. Start practicing to see your progress here!</p>
+        {% else %}
+            {% for record in records %}
+                <div class="card">
+                    <h3>{{ record.company }} • {{ record.role }} • {{ record.difficulty }}</h3>
+                    <p><strong>Score:</strong> {{ record.score }}/10</p>
+                    <p><strong>Question:</strong> {{ record.question }}</p>
+                    <p><strong>Date:</strong> {{ record.created_at }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <a href="/" class="back-link">← Back to home</a>
+    </div>
+
+</body>
+</html>
