@@ -50,6 +50,7 @@ with scores, strengths, improvements, and ideal sample answers.
 | Smart Follow-up Questions | ✅ Done |
 | Live Deployment on Render | ✅ Done |
 | Interview History (MySQL) | ✅ Done |
+| PDF Report Download | ✅ Done |
 | Voice Input | ⏳ Coming Soon |
 | Interview History | ⏳ Coming Soon |
 | PDF Report Download | ⏳ Coming Soon |
