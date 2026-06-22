@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, session
-from utils.llm import call_llm, get_db_connection
+from utils.llm import call_llm, get_db_connection, generate_pdf_report
+from flask import send_file
+import io
 from utils.prompts import get_question_prompt, get_evaluation_prompt
 from dotenv import load_dotenv
 import os
@@ -147,6 +149,27 @@ def history():
         records = []
 
     return render_template("history.html", records=records)
+
+
+
+# ─── Route 6: Download PDF Report ─────────────────────────────────
+@app.route("/download-pdf", methods=["POST"])
+def download_pdf():
+    role = request.form.get("role")
+    difficulty = request.form.get("difficulty")
+    company = request.form.get("company")
+    question = request.form.get("question")
+    answer = request.form.get("answer")
+    evaluation = request.form.get("evaluation")
+
+    pdf_bytes = generate_pdf_report(role, difficulty, company, question, answer, evaluation)
+
+    return send_file(
+        io.BytesIO(pdf_bytes),
+        mimetype="application/pdf",
+        as_attachment=True,
+        download_name="interview_report.pdf"
+    )
 
 
 # ─── Run App ──────────────────────────────────────────────────────
