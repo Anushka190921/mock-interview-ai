@@ -27,6 +27,17 @@
             <pre>{{ evaluation }}</pre>
         </div>
 
+
+        <form action="/download-pdf" method="POST" style="margin-bottom: 16px;">
+          <input type="hidden" name="role" value="{{ role }}">
+          <input type="hidden" name="difficulty" value="{{ difficulty }}">
+          <input type="hidden" name="company" value="{{ company }}">
+          <input type="hidden" name="question" value="{{ question }}">
+          <input type="hidden" name="answer" value="{{ answer }}">
+          <input type="hidden" name="evaluation" value="{{ evaluation }}">
+          <button type="submit">📄 Download PDF Report</button>
+        </form>
+
         <div class="actions">
             <a href="/interview" class="btn">← Try Another Question</a>
             <a href="/" class="btn btn-outline">🔄 Start Over</a>
