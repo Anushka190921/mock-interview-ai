@@ -30,22 +30,33 @@ def get_db_connection():
 
 from fpdf import FPDF
 
-def text_to_pdf(text_content, output_filename):
-    # Initialize the PDF object
+def generate_pdf_report(role, difficulty, company, question, answer, evaluation):
     pdf = FPDF()
     pdf.add_page()
-    
-    # Set a standard font (Arial, Helvetica, or Times)
-    pdf.set_font("Helvetica", size=12)
-    
-    # Split the text by newlines and add it line-by-line
-    # Setting 'ln=1' moves the cursor to the next line automatically
-    for line in text_content.split('\n'):
-        pdf.cell(200, 10, txt=line, ln=1)
-        
-    # Save the output file
-    pdf.output(output_filename)
 
-# Example Usage
-my_text = "Hello World!\nThis is a simple text to PDF conversion using Python."
-text_to_pdf(my_text, "output.pdf")
+    pdf.set_font("Helvetica", "B", 16)
+    pdf.cell(0, 10, "AI Mock Interview Report", ln=1, align="C")
+    pdf.ln(5)
+
+    pdf.set_font("Helvetica", "B", 12)
+    pdf.cell(0, 8, f"Company: {company}  |  Role: {role}  |  Level: {difficulty}", ln=1)
+    pdf.ln(5)
+
+    pdf.set_font("Helvetica", "B", 12)
+    pdf.cell(0, 8, "Question:", ln=1)
+    pdf.set_font("Helvetica", "", 11)
+    pdf.multi_cell(0, 7, question)
+    pdf.ln(3)
+
+    pdf.set_font("Helvetica", "B", 12)
+    pdf.cell(0, 8, "Your Answer:", ln=1)
+    pdf.set_font("Helvetica", "", 11)
+    pdf.multi_cell(0, 7, answer)
+    pdf.ln(3)
+
+    pdf.set_font("Helvetica", "B", 12)
+    pdf.cell(0, 8, "AI Evaluation:", ln=1)
+    pdf.set_font("Helvetica", "", 11)
+    pdf.multi_cell(0, 7, evaluation)
+
+    return pdf.output(dest="S")
