@@ -6,6 +6,7 @@ from utils.prompts import get_question_prompt, get_evaluation_prompt
 from dotenv import load_dotenv
 import os
 from flask_login import LoginManager
+from utils.models import get_user_by_id
 
 load_dotenv()
 
@@ -17,10 +18,11 @@ login_manager =LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"  # route name we'll create in a later step
 
-# Placeholder — will be replaced with real DB lookup in the next step
+
+# Look up the user from MySQL by id (used by Flask-Login on every request)
 @login_manager.user_loader
 def load_user(user_id):
-    return None
+    return get_user_by_id(user_id)
 
 # ─── Route 1: Home Page ───────────────────────────────────────────
 @app.route("/")
