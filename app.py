@@ -5,11 +5,22 @@ import io
 from utils.prompts import get_question_prompt, get_evaluation_prompt
 from dotenv import load_dotenv
 import os
+from flask_login import LoginManager
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
+# ─── Flask-Login Setup (User model + user_loader added in next step) ──────
+login_manager =LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"  # route name we'll create in a later step
+
+# Placeholder — will be replaced with real DB lookup in the next step
+@login_manager.user_loader
+def load_user(user_id):
+    return None
 
 # ─── Route 1: Home Page ───────────────────────────────────────────
 @app.route("/")
