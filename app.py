@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for, flash
 from utils.llm import call_llm, get_db_connection, generate_pdf_report
 from flask import send_file
 import io
@@ -6,7 +6,7 @@ from utils.prompts import get_question_prompt, get_evaluation_prompt
 from dotenv import load_dotenv
 import os
 from flask_login import LoginManager
-from utils.models import get_user_by_id
+from utils.models import get_user_by_id, get_user_by_username, create_user
 
 load_dotenv()
 
@@ -28,6 +28,45 @@ def load_user(user_id):
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+
+# ─── Route: Register ──────────────────────────────────────────────
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "GET":
+        return render_template("register.html")
+
+    username = request.form.get("username", "").strip()
+    email = request.form.get("email", "").strip()
+    password = request.form.get("password", "")
+    confirm_password = request.form.get("confirm_password", "")
+
+    if not username or not email or not password:
+        flash("All fields are required.", "error")
+        return render_template("register.html")
+
+    if password != confirm_password:
+        flash("Passwords do not match.", "error")
+        return render_template("register.html")
+
+    if len(password) < 6:
+        flash("Password must be at least 6 characters.", "error")
+        return render_template("register.html")
+
+    if get_user_by_username(username):
+        flash("That username is already taken.", "error")
+        return render_template("register.html")
+
+    try:
+        create_user(username, email, password)
+    except Exception as e:
+        print("Registration error:", e)
+        flash("Something went wrong. That email may already be registered.", "error")
+        return render_template("register.html")
+
+    flash("Account created! You can now log in.", "success")
+    return redirect(url_for("index"))
 
 
 # ─── Route 2: Generate Questions ─────────────────────────────────

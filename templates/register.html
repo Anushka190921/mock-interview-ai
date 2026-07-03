@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - AI Mock Interview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>📝 Create Account</h1>
+        <p class="subtitle">Sign up to save and track your interview history</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form action="/register" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required value="{{ request.form.get('username', '') }}">
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required value="{{ request.form.get('email', '') }}">
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" name="confirm_password" id="confirm_password" required>
+
+            <button type="submit">Create Account →</button>
+        </form>
+
+        <a href="/login" class="back-link">Already have an account? Log in</a>
+    </div>
+
+</body>
+</html>
