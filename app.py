@@ -4,20 +4,19 @@ from flask import send_file
 import io
 from utils.prompts import get_question_prompt, get_evaluation_prompt
 from dotenv import load_dotenv
-import os
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from utils.models import get_user_by_id, get_user_by_username, create_user
+import os
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-# ─── Flask-Login Setup (User model + user_loader added in next step) ──────
-login_manager =LoginManager()
+# ─── Flask-Login Setup ─────────────────────────────────────────────
+login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"  # route name we'll create in a later step
-
+login_manager.login_view = "login"
 
 # Look up the user from MySQL by id (used by Flask-Login on every request)
 @login_manager.user_loader
@@ -27,8 +26,9 @@ def load_user(user_id):
 # ─── Route 1: Home Page ───────────────────────────────────────────
 @app.route("/")
 def index():
+    if current_user.is_authenticated:
+        return redirect(url_for("interview"))
     return render_template("index.html")
-
 
 
 # ─── Route: Register ──────────────────────────────────────────────
@@ -96,12 +96,12 @@ def login():
 def logout():
     logout_user()
     flash("You've been logged out.", "success")
-    return redirect(url_for("index"))
-
+    return redirect(url_for("login"))
 
 
 # ─── Route 2: Generate Questions ─────────────────────────────────
 @app.route("/interview", methods=["GET", "POST"])
+@login_required
 def interview():
     if request.method == "GET":
         # Re-use previous session data
@@ -109,7 +109,9 @@ def interview():
         difficulty = session.get("difficulty")
         company = session.get("company")
         questions = session.get("questions")
-        return render_template("interview.html", role=role, difficulty=difficulty, company=company, questions=questions)
+        if questions:
+            return render_template("interview.html", role=role, difficulty=difficulty, company=company, questions=questions)
+        return render_template("dashboard.html")
 
     role = request.form.get("role")
     difficulty = request.form.get("difficulty")
@@ -133,6 +135,7 @@ def interview():
 
 # ─── Route 3: Generate Follow-up Question ─────────────────────────
 @app.route("/followup", methods=["POST"])
+@login_required
 def followup():
     role = session.get("role")
     difficulty = session.get("difficulty")
@@ -140,11 +143,9 @@ def followup():
     question = request.form.get("question")
     answer = request.form.get("answer")
 
-    # Store original question and answer in session
     session["original_question"] = question
     session["original_answer"] = answer
 
-    # Generate follow-up question
     from utils.prompts import get_followup_prompt
     prompt = get_followup_prompt(role, difficulty, company, question, answer)
     followup_question = call_llm(prompt)
@@ -158,10 +159,9 @@ def followup():
                            followup_question=followup_question)
 
 
-
-
 # ─── Route 4: Evaluate Answer ─────────────────────────────────────
 @app.route("/feedback", methods=["POST"])
+@login_required
 def feedback():
     role = session.get("role")
     difficulty = session.get("difficulty")
@@ -183,14 +183,12 @@ Follow-up Answer: {followup_answer}
     prompt = get_evaluation_prompt(role, difficulty, company, question, combined_answer)
     evaluation = call_llm(prompt)
 
-    # Extract score from evaluation
     score = "N/A"
     for line in evaluation.split("\n"):
         if line.strip().startswith("SCORE:"):
             score = line.strip().replace("SCORE:", "").strip()
             break
 
-    # Save to database
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -216,9 +214,9 @@ Follow-up Answer: {followup_answer}
                            evaluation=evaluation)
 
 
-
 # ─── Route 5: View Interview History ──────────────────────────────
 @app.route("/history")
+@login_required
 def history():
     try:
         conn = get_db_connection()
@@ -234,9 +232,9 @@ def history():
     return render_template("history.html", records=records)
 
 
-
 # ─── Route 6: Download PDF Report ─────────────────────────────────
 @app.route("/download-pdf", methods=["POST"])
+@login_required
 def download_pdf():
     role = request.form.get("role")
     difficulty = request.form.get("difficulty")
