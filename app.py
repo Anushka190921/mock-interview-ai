@@ -5,7 +5,7 @@ import io
 from utils.prompts import get_question_prompt, get_evaluation_prompt
 from dotenv import load_dotenv
 import os
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, logout_user, login_required
 from utils.models import get_user_by_id, get_user_by_username, create_user
 
 load_dotenv()
@@ -88,6 +88,16 @@ def login():
     login_user(user, remember=remember)
     flash(f"Welcome back, {user.username}!", "success")
     return redirect(url_for("index"))
+
+
+# ─── Route: Logout ─────────────────────────────────────────────────
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("You've been logged out.", "success")
+    return redirect(url_for("index"))
+
 
 
 # ─── Route 2: Generate Questions ─────────────────────────────────
