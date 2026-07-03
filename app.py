@@ -189,19 +189,22 @@ Follow-up Answer: {followup_answer}
             score = line.strip().replace("SCORE:", "").strip()
             break
 
+    # Save to database
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO interview_history
-            (role, difficulty, company, question, answer, followup_question, followup_answer, score, evaluation)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (role, difficulty, company, question, answer, followup_question, followup_answer, score, evaluation))
+            (user_id, role, difficulty, company, question, answer, followup_question, followup_answer, score, evaluation)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (current_user.id, role, difficulty, company, question, answer, followup_question, followup_answer, score, evaluation))
         conn.commit()
         cursor.close()
         conn.close()
     except Exception as e:
         print("Database error:", e)
+
+
 
     return render_template("feedback.html",
                            role=role,
@@ -221,7 +224,10 @@ def history():
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM interview_history ORDER BY created_at DESC")
+        cursor.execute(
+            "SELECT * FROM interview_history WHERE user_id = %s ORDER BY created_at DESC",
+            (current_user.id,)
+        )
         records = cursor.fetchall()
         cursor.close()
         conn.close()
