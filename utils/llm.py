@@ -22,10 +22,12 @@ import mysql.connector
 
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
+        host=os.getenv("MYSQL_HOST"),
+        port=int(os.getenv("MYSQL_PORT", 3306)),
+        user=os.getenv("MYSQL_USER"),
         password=os.getenv("MYSQL_PASSWORD"),
-        database="mock_interview_db"
+        database=os.getenv("MYSQL_DATABASE"),
+        ssl_disabled=False
     )
 
 from fpdf import FPDF
