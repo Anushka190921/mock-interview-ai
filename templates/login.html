@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AI Mock Interview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>🔐 Log In</h1>
+        <p class="subtitle">Welcome back — log in to continue practicing</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form action="/login" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required value="{{ request.form.get('username', '') }}">
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+
+            <div style="margin: 12px 0;">
+                <label style="display: inline-flex; align-items: center; gap: 8px; font-weight: normal;">
+                    <input type="checkbox" name="remember" style="width: auto;">
+                    Remember me
+                </label>
+            </div>
+
+            <button type="submit">Log In →</button>
+        </form>
+
+        <a href="/register" class="back-link">Don't have an account? Register</a>
+    </div>
+
+</body>
+</html>

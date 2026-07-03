@@ -5,7 +5,7 @@ import io
 from utils.prompts import get_question_prompt, get_evaluation_prompt
 from dotenv import load_dotenv
 import os
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user
 from utils.models import get_user_by_id, get_user_by_username, create_user
 
 load_dotenv()
@@ -66,6 +66,27 @@ def register():
         return render_template("register.html")
 
     flash("Account created! You can now log in.", "success")
+    return redirect(url_for("index"))
+
+
+# ─── Route: Login ──────────────────────────────────────────────────
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "GET":
+        return render_template("login.html")
+
+    username = request.form.get("username", "").strip()
+    password = request.form.get("password", "")
+    remember = bool(request.form.get("remember"))
+
+    user = get_user_by_username(username)
+
+    if user is None or not user.check_password(password):
+        flash("Invalid username or password.", "error")
+        return render_template("login.html")
+
+    login_user(user, remember=remember)
+    flash(f"Welcome back, {user.username}!", "success")
     return redirect(url_for("index"))
 
 
