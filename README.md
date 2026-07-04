@@ -30,7 +30,9 @@
 
 ## 📊 Project Presentation
 
-[View the full presentation](https://gamma.app/docs/AI-Mock-Interview-System-a7rnsa1acy1rck2) — covering the problem, architecture, tech stack, and engineering challenges in detail.
+[View Live Presentation](https://gamma.app/docs/AI-Mock-Interview-System-a7rnsa1acy1rck2) · [Download PDF](docs/AI-Mock-Interview-System.pdf)
+
+Covers the problem, architecture, tech stack, and engineering challenges in detail.
 
 ---
 
