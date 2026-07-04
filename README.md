@@ -28,6 +28,10 @@
 
 </div>
 
+## 📊 Project Presentation
+
+[View the full presentation](https://gamma.app/docs/AI-Mock-Interview-System-a7rnsa1acy1rck2) — covering the problem, architecture, tech stack, and engineering challenges in detail.
+
 ---
 
 ## 📌 About
