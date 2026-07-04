@@ -6,7 +6,11 @@
     <title>Interview - {{ role }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
+
 <body>
+
+    {% include '_navbar.html' %}
 
     <div class="container">
         <h1>🎤 Interview for {{ role }}</h1>
