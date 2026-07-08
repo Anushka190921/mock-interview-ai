@@ -31,6 +31,23 @@ def index():
     return render_template("index.html")
 
 
+
+# ─── Health Check (keeps Aiven DB + Render awake) ──────────────────
+@app.route("/healthz")
+def healthz():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1")
+        cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return "OK", 200
+    except Exception as e:
+        print("Health check DB error:", e)
+        return "DB unreachable", 500
+
+
 # ─── Route: Register ──────────────────────────────────────────────
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -215,6 +232,13 @@ Follow-up Answer: {followup_answer}
                            followup_question=followup_question,
                            followup_answer=followup_answer,
                            evaluation=evaluation)
+
+
+# Enforce length limits server-side (HTML maxlength can be bypassed)
+    MAX_ANSWER_LENGTH = 3000
+    if len(answer or "") > MAX_ANSWER_LENGTH or len(followup_answer or "") > MAX_ANSWER_LENGTH:
+        flash("Your answer is too long. Please keep it under 3000 characters.", "error")
+        return redirect(url_for("interview"))
 
 
 # ─── Route 5: View Interview History ──────────────────────────────
