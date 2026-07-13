@@ -6,6 +6,8 @@ from utils.prompts import get_question_prompt, get_evaluation_prompt
 from dotenv import load_dotenv
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from utils.models import get_user_by_id, get_user_by_username, create_user
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import os
 
 load_dotenv()
@@ -17,6 +19,23 @@ app.secret_key = os.getenv("SECRET_KEY")
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
+
+
+# ─── Rate Limiting Setup ───────────────────────────────────────────
+# Logged-in users are limited per account (so one account can't be
+# hammered from many IPs); anonymous requests fall back to per-IP.
+def rate_limit_key():
+    if current_user.is_authenticated:
+        return f"user:{current_user.id}"
+    return get_remote_address()
+
+
+limiter = Limiter(
+    app=app,
+    key_func=rate_limit_key,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://",
+)
 
 # Look up the user from MySQL by id (used by Flask-Login on every request)
 @login_manager.user_loader
@@ -50,6 +69,7 @@ def healthz():
 
 # ─── Route: Register ──────────────────────────────────────────────
 @app.route("/register", methods=["GET", "POST"])
+@limiter.limit("5 per hour")
 def register():
     if request.method == "GET":
         return render_template("register.html")
@@ -88,6 +108,7 @@ def register():
 
 # ─── Route: Login ──────────────────────────────────────────────────
 @app.route("/login", methods=["GET", "POST"])
+@limiter.limit("10 per minute")
 def login():
     if request.method == "GET":
         return render_template("login.html")
@@ -119,6 +140,7 @@ def logout():
 # ─── Route 2: Generate Questions ─────────────────────────────────
 @app.route("/interview", methods=["GET", "POST"])
 @login_required
+@limiter.limit("15 per hour", methods=["POST"])
 def interview():
     if request.method == "GET":
         # Re-use previous session data
@@ -153,6 +175,7 @@ def interview():
 # ─── Route 3: Generate Follow-up Question ─────────────────────────
 @app.route("/followup", methods=["POST"])
 @login_required
+@limiter.limit("15 per hour")
 def followup():
     role = session.get("role")
     difficulty = session.get("difficulty")
@@ -179,6 +202,7 @@ def followup():
 # ─── Route 4: Evaluate Answer ─────────────────────────────────────
 @app.route("/feedback", methods=["POST"])
 @login_required
+@limiter.limit("15 per hour")
 def feedback():
     role = session.get("role")
     difficulty = session.get("difficulty")
