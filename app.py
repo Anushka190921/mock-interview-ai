@@ -234,11 +234,15 @@ Follow-up Answer: {followup_answer}
                            evaluation=evaluation)
 
 
-# Enforce length limits server-side (HTML maxlength can be bypassed)
-    MAX_ANSWER_LENGTH = 3000
-    if len(answer or "") > MAX_ANSWER_LENGTH or len(followup_answer or "") > MAX_ANSWER_LENGTH:
-        flash("Your answer is too long. Please keep it under 3000 characters.", "error")
-        return redirect(url_for("interview"))
+# ─── Error Handlers ────────────────────────────────────────────────
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template("404.html"), 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template("500.html"), 500
 
 
 # ─── Route 5: View Interview History ──────────────────────────────
