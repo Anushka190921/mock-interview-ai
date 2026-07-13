@@ -269,6 +269,11 @@ def internal_error(error):
     return render_template("500.html"), 500
 
 
+@app.errorhandler(429)
+def rate_limit_error(error):
+    return render_template("429.html"), 429
+
+
 # ─── Route 5: View Interview History ──────────────────────────────
 @app.route("/history")
 @login_required

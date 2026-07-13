@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Too Many Requests — AI Mock Interview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="container" style="text-align: center;">
+        <h1 style="font-size: 64px; margin-bottom: 0;">⏳</h1>
+        <h1>429 — Slow Down a Little</h1>
+        <p class="subtitle">
+            You've made too many requests in a short time. Please wait a bit before trying again.
+        </p>
+
+        <div class="actions" style="justify-content: center;">
+            <a href="{{ url_for('index') }}" class="btn">Back to Home</a>
+        </div>
+    </div>
+
+</body>
+</html>
