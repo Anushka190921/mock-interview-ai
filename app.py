@@ -289,4 +289,5 @@ def download_pdf():
 
 # ─── Run App ──────────────────────────────────────────────────────
 if __name__ == "__main__":
-    app.run(debug=True)
+    debug_mode = os.getenv("FLASK_DEBUG", "False").lower() in ("true", "1", "yes")
+    app.run(debug=debug_mode)
