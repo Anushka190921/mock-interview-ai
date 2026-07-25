@@ -5,41 +5,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - AI Mock Interview</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body.auth-body {
+            padding: 0;
+            align-items: stretch;
+            justify-content: stretch;
+        }
+        .auth-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+            width: 100%;
+        }
+        .auth-visual {
+            background: linear-gradient(160deg, var(--panel), var(--ink));
+            border-right: 1px solid var(--line);
+            padding: 60px 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .auth-visual::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(500px 380px at 20% 15%, rgba(45,212,191,0.12), transparent 60%),
+                        radial-gradient(480px 420px at 85% 85%, rgba(242,184,75,0.08), transparent 60%);
+            pointer-events: none;
+        }
+        .auth-brand {
+            display: flex; align-items: center; gap: 10px;
+            font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.2rem;
+            margin-bottom: 60px; position: relative; z-index: 1;
+        }
+        .auth-brand-dot {
+            width: 10px; height: 10px; border-radius: 3px; background: var(--teal);
+            box-shadow: 0 0 12px rgba(45,212,191,0.7);
+        }
+        .auth-visual h2 {
+            font-family: 'Sora', sans-serif; font-weight: 800; font-size: 2rem;
+            line-height: 1.2; position: relative; z-index: 1; max-width: 420px;
+        }
+        .auth-visual h2 .grad {
+            background: linear-gradient(120deg, var(--teal), var(--amber));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .auth-visual p.lead {
+            margin-top: 18px; color: var(--text-dim); font-size: 1rem; line-height: 1.6;
+            max-width: 380px; position: relative; z-index: 1;
+        }
+        .auth-features {
+            margin-top: 44px; list-style: none; position: relative; z-index: 1;
+        }
+        .auth-features li {
+            display: flex; align-items: center; gap: 12px;
+            color: var(--text-dim); font-size: 0.92rem; margin-bottom: 16px;
+        }
+        .auth-features li svg { flex-shrink: 0; }
+        .auth-ghost-term {
+            margin-top: 50px; padding: 16px 18px; border-radius: 12px;
+            border: 1px solid var(--line); background: rgba(255,255,255,0.02);
+            font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+            color: var(--text-dim); line-height: 1.8; position: relative; z-index: 1;
+        }
+        .auth-ghost-term .hl { color: var(--teal); }
+
+        .auth-form-side {
+            display: flex; align-items: center; justify-content: center;
+            padding: 40px;
+        }
+        .auth-form-side .container {
+            box-shadow: none; border: none; background: transparent;
+            max-width: 420px; padding: 0;
+        }
+
+        @media (max-width: 900px) {
+            .auth-grid { grid-template-columns: 1fr; }
+            .auth-visual { display: none; }
+            .auth-form-side { padding: 20px; }
+        }
+    </style>
 </head>
-<body>
+<body class="auth-body">
 
-    <div class="container">
-        <h1>🔐 Log In</h1>
-        <p class="subtitle">Welcome back — log in to continue practicing</p>
+    <div class="auth-grid">
+        <div class="auth-visual">
+            <div class="auth-brand"><span class="auth-brand-dot"></span> AI Mock Interview</div>
+            <h2>Welcome back.<br><span class="grad">Let's keep practicing.</span></h2>
+            <p class="lead">Log in to pick up where you left off — your saved history, scores, and past sessions are waiting.</p>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="flash-messages">
-                    {% for category, message in messages %}
-                        <div class="flash flash-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
+            <ul class="auth-features">
+                <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> 15 roles across product &amp; service companies</li>
+                <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f2b84b" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> AI-graded feedback after every answer</li>
+                <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Full history saved to your account</li>
+            </ul>
 
-        <form action="/login" method="POST">
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required value="{{ request.form.get('username', '') }}">
-
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
-
-            <div style="margin: 12px 0;">
-                <label style="display: inline-flex; align-items: center; gap: 8px; font-weight: normal;">
-                    <input type="checkbox" name="remember" style="width: auto;">
-                    Remember me
-                </label>
+            <div class="auth-ghost-term">
+                <span class="hl">role:</span> Software Engineer &nbsp;·&nbsp; <span class="hl">company:</span> Google<br>
+                <span class="hl">Q:</span> Tell me about a time you optimized a slow system.<br>
+                <span class="hl">Score:</span> 8/10
             </div>
+        </div>
 
-            <button type="submit">Log In →</button>
-        </form>
+        <div class="auth-form-side">
+            <div class="container">
+                <h1>🔐 Log In</h1>
+                <p class="subtitle">Welcome back — log in to continue practicing</p>
 
-        <a href="/register" class="back-link">Don't have an account? Register</a>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="flash-messages">
+                            {% for category, message in messages %}
+                                <div class="flash flash-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <form action="/login" method="POST">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" id="username" required value="{{ request.form.get('username', '') }}">
+
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" required>
+
+                    <div style="margin: 12px 0;">
+                        <label style="display: inline-flex; align-items: center; gap: 8px; font-weight: normal;">
+                            <input type="checkbox" name="remember" style="width: auto;">
+                            Remember me
+                        </label>
+                    </div>
+
+                    <button type="submit">Log In →</button>
+                </form>
+
+                <a href="/register" class="back-link">Don't have an account? Register</a>
+            </div>
+        </div>
     </div>
 
 </body>

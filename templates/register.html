@@ -5,40 +5,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - AI Mock Interview</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body.auth-body {
+            padding: 0;
+            align-items: stretch;
+            justify-content: stretch;
+        }
+        .auth-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+            width: 100%;
+        }
+        .auth-visual {
+            background: linear-gradient(160deg, var(--panel), var(--ink));
+            border-right: 1px solid var(--line);
+            padding: 60px 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .auth-visual::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(500px 380px at 20% 15%, rgba(45,212,191,0.12), transparent 60%),
+                        radial-gradient(480px 420px at 85% 85%, rgba(242,184,75,0.08), transparent 60%);
+            pointer-events: none;
+        }
+        .auth-brand {
+            display: flex; align-items: center; gap: 10px;
+            font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.2rem;
+            margin-bottom: 60px; position: relative; z-index: 1;
+        }
+        .auth-brand-dot {
+            width: 10px; height: 10px; border-radius: 3px; background: var(--teal);
+            box-shadow: 0 0 12px rgba(45,212,191,0.7);
+        }
+        .auth-visual h2 {
+            font-family: 'Sora', sans-serif; font-weight: 800; font-size: 2rem;
+            line-height: 1.2; position: relative; z-index: 1; max-width: 420px;
+        }
+        .auth-visual h2 .grad {
+            background: linear-gradient(120deg, var(--teal), var(--amber));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .auth-visual p.lead {
+            margin-top: 18px; color: var(--text-dim); font-size: 1rem; line-height: 1.6;
+            max-width: 380px; position: relative; z-index: 1;
+        }
+        .auth-features {
+            margin-top: 44px; list-style: none; position: relative; z-index: 1;
+        }
+        .auth-features li {
+            display: flex; align-items: center; gap: 12px;
+            color: var(--text-dim); font-size: 0.92rem; margin-bottom: 16px;
+        }
+        .auth-features li svg { flex-shrink: 0; }
+        .auth-ghost-term {
+            margin-top: 50px; padding: 16px 18px; border-radius: 12px;
+            border: 1px solid var(--line); background: rgba(255,255,255,0.02);
+            font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+            color: var(--text-dim); line-height: 1.8; position: relative; z-index: 1;
+        }
+        .auth-ghost-term .hl { color: var(--teal); }
+
+        .auth-form-side {
+            display: flex; align-items: center; justify-content: center;
+            padding: 40px;
+        }
+        .auth-form-side .container {
+            box-shadow: none; border: none; background: transparent;
+            max-width: 420px; padding: 0;
+        }
+
+        @media (max-width: 900px) {
+            .auth-grid { grid-template-columns: 1fr; }
+            .auth-visual { display: none; }
+            .auth-form-side { padding: 20px; }
+        }
+    </style>
 </head>
-<body>
+<body class="auth-body">
 
-    <div class="container">
-        <h1>📝 Create Account</h1>
-        <p class="subtitle">Sign up to save and track your interview history</p>
+    <div class="auth-grid">
+        <div class="auth-visual">
+            <div class="auth-brand"><span class="auth-brand-dot"></span> AI Mock Interview</div>
+            <h2>Your next interview<br><span class="grad">starts with practice.</span></h2>
+            <p class="lead">Create a free account to save your history, track your scores, and practice as many sessions as you want.</p>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="flash-messages">
-                    {% for category, message in messages %}
-                        <div class="flash flash-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
+            <ul class="auth-features">
+                <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> 11 company styles, from Google to startups</li>
+                <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f2b84b" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Smart follow-ups based on your answers</li>
+                <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Downloadable PDF report per session</li>
+            </ul>
 
-        <form action="/register" method="POST">
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required value="{{ request.form.get('username', '') }}">
+            <div class="auth-ghost-term">
+                <span class="hl">role:</span> Data Scientist &nbsp;·&nbsp; <span class="hl">company:</span> Amazon<br>
+                <span class="hl">Q:</span> Walk me through a time you handled messy data.<br>
+                <span class="hl">Score:</span> 9/10
+            </div>
+        </div>
 
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required value="{{ request.form.get('email', '') }}">
+        <div class="auth-form-side">
+            <div class="container">
+                <h1>📝 Create Account</h1>
+                <p class="subtitle">Sign up to save and track your interview history</p>
 
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="flash-messages">
+                            {% for category, message in messages %}
+                                <div class="flash flash-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
 
-            <label for="confirm_password">Confirm Password:</label>
-            <input type="password" name="confirm_password" id="confirm_password" required>
+                <form action="/register" method="POST">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" id="username" required value="{{ request.form.get('username', '') }}">
 
-            <button type="submit">Create Account →</button>
-        </form>
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" required value="{{ request.form.get('email', '') }}">
 
-        <a href="/login" class="back-link">Already have an account? Log in</a>
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" required>
+
+                    <label for="confirm_password">Confirm Password:</label>
+                    <input type="password" name="confirm_password" id="confirm_password" required>
+
+                    <button type="submit">Create Account →</button>
+                </form>
+
+                <a href="/login" class="back-link">Already have an account? Log in</a>
+            </div>
+        </div>
     </div>
 
 </body>
