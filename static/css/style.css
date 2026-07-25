@@ -1,3 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --ink: #0a0e17;
+    --panel: #121a2b;
+    --panel-2: #0d1220;
+    --field: rgba(255, 255, 255, 0.03);
+    --line: rgba(255, 255, 255, 0.08);
+    --line-strong: rgba(255, 255, 255, 0.16);
+    --teal: #2dd4bf;
+    --teal-ink: #06231f;
+    --amber: #f2b84b;
+    --text: #eef2f8;
+    --text-dim: #8b96ad;
+    --danger-bg: rgba(242, 98, 98, 0.12);
+    --danger-border: rgba(242, 98, 98, 0.35);
+    --danger-text: #ff9d9d;
+    --success-bg: rgba(79, 209, 132, 0.12);
+    --success-border: rgba(79, 209, 132, 0.35);
+    --success-text: #7be2a4;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,9 +27,13 @@
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f0f4f8;
-    color: #333;
+    font-family: 'Inter', sans-serif;
+    background: var(--ink);
+    background-image:
+        radial-gradient(600px 400px at 12% 0%, rgba(45, 212, 191, 0.08), transparent 60%),
+        radial-gradient(650px 480px at 88% 10%, rgba(242, 184, 75, 0.06), transparent 60%);
+    background-attachment: fixed;
+    color: var(--text);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -17,22 +43,25 @@ body {
 }
 
 .container {
-    background: white;
+    background: linear-gradient(160deg, var(--panel), var(--panel-2));
+    border: 1px solid var(--line);
     border-radius: 16px;
     padding: 40px;
     width: 100%;
     max-width: 700px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
 }
 
 h1 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
     font-size: 28px;
     margin-bottom: 8px;
-    color: #1a1a2e;
+    color: var(--text);
 }
 
 .subtitle {
-    color: #666;
+    color: var(--text-dim);
     margin-bottom: 32px;
     font-size: 15px;
 }
@@ -42,79 +71,94 @@ label {
     font-weight: 600;
     margin-bottom: 8px;
     margin-top: 20px;
-    color: #444;
+    color: var(--text-dim);
+    font-size: 14px;
 }
 
 select, textarea {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid var(--line);
     border-radius: 10px;
     font-size: 15px;
     font-family: inherit;
-    transition: border-color 0.2s;
-    background: #fafafa;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--field);
+    color: var(--text);
+}
+
+select option {
+    background: var(--panel-2);
+    color: var(--text);
 }
 
 select:focus, textarea:focus {
     outline: none;
-    border-color: #6c63ff;
-    background: white;
+    border-color: var(--teal);
+    background: rgba(45, 212, 191, 0.05);
+}
+
+textarea::placeholder {
+    color: var(--text-dim);
 }
 
 button, .btn {
     display: inline-block;
     margin-top: 24px;
     padding: 14px 28px;
-    background: #6c63ff;
-    color: white;
+    background: var(--teal);
+    color: var(--teal-ink);
     border: none;
     border-radius: 10px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     text-decoration: none;
-    transition: background 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 button:hover, .btn:hover {
-    background: #5a52d5;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(45, 212, 191, 0.28);
 }
 
 .btn-outline {
-    background: white;
-    color: #6c63ff;
-    border: 2px solid #6c63ff;
+    background: transparent;
+    color: var(--teal);
+    border: 2px solid var(--teal);
     margin-left: 12px;
 }
 
 .btn-outline:hover {
-    background: #f0eeff;
+    background: rgba(45, 212, 191, 0.08);
+    box-shadow: none;
 }
 
 .card {
-    background: #f8f9ff;
-    border: 1px solid #e8e8ff;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--line);
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 16px;
 }
 
 .card h3 {
+    font-family: 'Sora', sans-serif;
     font-size: 16px;
+    font-weight: 600;
     margin-bottom: 10px;
-    color: #444;
+    color: var(--text);
 }
 
 .card p {
-    color: #555;
+    color: var(--text-dim);
     line-height: 1.6;
 }
 
 .evaluation pre {
     white-space: pre-wrap;
     font-family: inherit;
-    color: #333;
+    color: var(--text);
     line-height: 1.8;
     font-size: 15px;
 }
@@ -123,12 +167,14 @@ button:hover, .btn:hover {
     margin-top: 24px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .back-link {
     display: inline-block;
     margin-top: 16px;
-    color: #6c63ff;
+    color: var(--teal);
     text-decoration: none;
     font-size: 14px;
 }
@@ -140,18 +186,19 @@ button:hover, .btn:hover {
 input[type="text"], input[type="email"], input[type="password"] {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid var(--line);
     border-radius: 10px;
     font-size: 15px;
     font-family: inherit;
-    transition: border-color 0.2s;
-    background: #fafafa;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--field);
+    color: var(--text);
 }
 
 input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
     outline: none;
-    border-color: #6c63ff;
-    background: white;
+    border-color: var(--teal);
+    background: rgba(45, 212, 191, 0.05);
 }
 
 .flash-messages {
@@ -166,15 +213,15 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 }
 
 .flash-error {
-    background: #ffe5e5;
-    color: #c0392b;
-    border: 1px solid #f5b7b1;
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-border);
 }
 
 .flash-success {
-    background: #e5ffe9;
-    color: #1e8449;
-    border: 1px solid #a9dfbf;
+    background: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
 }
 
 .navbar {
@@ -190,16 +237,103 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 }
 
 .navbar-user {
-    color: #444;
+    color: var(--text-dim);
     font-weight: 500;
 }
 
 .navbar-link {
-    color: #6c63ff;
+    color: var(--teal);
     text-decoration: none;
     font-weight: 600;
 }
 
 .navbar-link:hover {
     text-decoration: underline;
+}
+
+:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+}
+
+/* ── Entrance & micro-interactions ─────────────────────────────── */
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(22px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.35); }
+    50%      { box-shadow: 0 0 0 6px rgba(45, 212, 191, 0); }
+}
+
+.container {
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.navbar {
+    animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.flash-messages .flash {
+    animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Cards fade/rise in with a gentle stagger — works for feedback,
+   follow-up, and history pages without needing per-page JS */
+.card {
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.card:nth-of-type(1) { animation-delay: 0.05s; }
+.card:nth-of-type(2) { animation-delay: 0.12s; }
+.card:nth-of-type(3) { animation-delay: 0.19s; }
+.card:nth-of-type(4) { animation-delay: 0.26s; }
+.card:nth-of-type(5) { animation-delay: 0.33s; }
+.card:nth-of-type(n+6) { animation-delay: 0.4s; }
+
+/* Inputs / selects / textareas: glowing focus ring instead of a flat border */
+select:focus, textarea:focus,
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+    box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.15);
+}
+
+/* Buttons: soft glow pulse once on page load to draw the eye, plus a
+   sheen sweep on hover */
+button, .btn {
+    position: relative;
+    overflow: hidden;
+    animation: glowPulse 2.4s ease-out 0.6s 1;
+}
+
+button::after, .btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -60%;
+    width: 40%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+}
+
+button:hover::after, .btn:hover::after {
+    left: 130%;
+}
+
+.btn-outline::after {
+    background: linear-gradient(120deg, transparent, rgba(45,212,191,0.25), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .container, .navbar, .flash-messages .flash, .card, button, .btn {
+        animation: none !important;
+    }
+    button::after, .btn::after {
+        display: none;
+    }
 }
