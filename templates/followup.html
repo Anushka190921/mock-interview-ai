@@ -24,7 +24,7 @@
             <p>{{ original_answer }}</p>
         </div>
 
-        <div class="card" style="border-color: #6c63ff;">
+        <div class="card" style="border-color: #2dd4bf;">
             <h3>🎯 Interviewer Follow-up</h3>
             <p><strong>{{ followup_question }}</strong></p>
         </div>
@@ -36,12 +36,13 @@
 
             <label for="followup_answer">Your Answer to Follow-up:</label>
             <textarea
-                name="followup_answer"
-                id="followup_answer"
-                rows="6"
-                placeholder="Answer the follow-up question here..."
-                required>
-            </textarea>
+              name="followup_answer"
+              id="followup_answer"
+              rows="6"
+              maxlength="3000"
+              placeholder="Answer the follow-up question here... (max 3000 characters)"
+              required>
+</textarea>
 
             <button type="submit">Get Final Feedback →</button>
         </form>
