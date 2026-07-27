@@ -337,3 +337,122 @@ button:hover::after, .btn:hover::after {
         display: none;
     }
 }
+
+/* ── Icon pop + staggered form reveal ──────────────────────────── */
+
+@keyframes iconPop {
+    0%   { opacity: 0; transform: scale(0.4) rotate(-8deg); }
+    60%  { opacity: 1; transform: scale(1.15) rotate(3deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.icon-pop {
+    display: inline-block;
+    animation: iconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: 0.15s;
+}
+
+form > label {
+    animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+form > label:nth-of-type(1) { animation-delay: 0.15s; }
+form > label:nth-of-type(2) { animation-delay: 0.22s; }
+form > label:nth-of-type(3) { animation-delay: 0.29s; }
+form > label:nth-of-type(4) { animation-delay: 0.36s; }
+form > label:nth-of-type(n+5) { animation-delay: 0.42s; }
+
+form > select, form > textarea,
+form > input[type="text"], form > input[type="email"], form > input[type="password"] {
+    animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+form > select:nth-of-type(1), form > textarea:nth-of-type(1) { animation-delay: 0.18s; }
+form > select:nth-of-type(2), form > textarea:nth-of-type(2) { animation-delay: 0.25s; }
+form > select:nth-of-type(3) { animation-delay: 0.32s; }
+
+/* ── Eyebrow badge (small pill tag above headings) ─────────────── */
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    border: 1px solid rgba(45, 212, 191, 0.3);
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: rgba(45, 212, 191, 0.06);
+    margin-bottom: 18px;
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.eyebrow::before {
+    content: '';
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 8px var(--teal);
+}
+
+/* ── Meta bar: role / difficulty / company pills ───────────────── */
+.meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 0.08s;
+}
+.meta-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-dim);
+}
+.meta-pill b { color: var(--text); font-weight: 600; }
+
+/* ── Score badge ────────────────────────────────────────────────── */
+.score-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: rgba(242, 184, 75, 0.1);
+    border: 1px solid rgba(242, 184, 75, 0.35);
+    color: var(--amber);
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Empty state ────────────────────────────────────────────────── */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-dim);
+}
+.empty-state .icon {
+    font-size: 42px;
+    margin-bottom: 14px;
+    display: block;
+}
+
+/* ── Field label icons (small inline emoji before label text) ──── */
+.field-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .icon-pop, form > label, form > select, form > textarea,
+    form > input[type="text"], form > input[type="email"], form > input[type="password"],
+    .eyebrow, .meta-bar, .score-badge {
+        animation: none !important;
+    }
+}

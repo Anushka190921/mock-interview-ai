@@ -11,16 +11,23 @@
     {% include '_navbar.html' %}
 
     <div class="container" style="max-width: 900px;">
-        <h1>📊 Interview History</h1>
+        <h1><span class="icon-pop">📊</span> Interview History</h1>
         <p class="subtitle">Track your progress across all practice sessions</p>
 
         {% if records|length == 0 %}
-            <p>No interview history yet. Start practicing to see your progress here!</p>
+            <div class="empty-state">
+                <span class="icon">🗒️</span>
+                <p>No interview history yet. Start practicing to see your progress here!</p>
+                <a href="/" class="btn" style="margin-top: 10px;">Start Practicing →</a>
+            </div>
         {% else %}
+            <div class="meta-bar">
+                <span class="meta-pill">📁 <b>{{ records|length }}</b> session{{ 's' if records|length != 1 else '' }} recorded</span>
+            </div>
             {% for record in records %}
                 <div class="card">
                     <h3>{{ record.company }} • {{ record.role }} • {{ record.difficulty }}</h3>
-                    <p><strong>Score:</strong> {{ record.score }}/10</p>
+                    <div class="score-badge" style="margin-bottom: 10px;">🏆 Score: {{ record.score }}/10</div>
                     <p><strong>Question:</strong> {{ record.question }}</p>
                     <p><strong>Date:</strong> {{ record.created_at }}</p>
                 </div>

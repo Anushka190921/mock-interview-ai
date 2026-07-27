@@ -11,8 +11,23 @@
     {% include '_navbar.html' %}
 
     <div class="container">
-        <h1>📊 Your Feedback</h1>
-        <p class="subtitle">Role: {{ role }}</p>
+        <h1><span class="icon-pop">📊</span> Your Feedback</h1>
+
+        <div class="meta-bar">
+            <span class="meta-pill">💼 <b>{{ role }}</b></span>
+            {% if company %}<span class="meta-pill">🏢 <b>{{ company }}</b></span>{% endif %}
+            {% if difficulty %}<span class="meta-pill">📈 <b>{{ difficulty }}</b></span>{% endif %}
+        </div>
+
+        {% set ns = namespace(score_line='') %}
+        {% for line in evaluation.split('\n') %}
+            {% if line.strip().upper().startswith('SCORE:') %}
+                {% set ns.score_line = line.strip() %}
+            {% endif %}
+        {% endfor %}
+        {% if ns.score_line %}
+            <div class="score-badge">🏆 {{ ns.score_line }}</div>
+        {% endif %}
 
         <div class="card">
             <h3>❓ Question Asked</h3>

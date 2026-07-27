@@ -13,12 +13,18 @@
     {% include '_navbar.html' %}
 
     <div class="container">
-        <h1>🎤 Interview for {{ role }}</h1>
+        <h1><span class="icon-pop">🎤</span> Interview for {{ role }}</h1>
         <p class="subtitle">Choose a question, write your answer, and get AI feedback</p>
+
+        <div class="meta-bar">
+            <span class="meta-pill">🏢 <b>{{ company }}</b></span>
+            <span class="meta-pill">📈 <b>{{ difficulty }}</b></span>
+            <span class="meta-pill">💼 <b>{{ role }}</b></span>
+        </div>
 
         <form action="/followup" method="POST">
 
-            <label for="question">Select a Question:</label>
+            <label for="question" class="field-label">❓ Select a Question:</label>
             <select name="question" id="question" required>
                 <option value="">-- Choose a question --</option>
                 {% for question in questions %}
@@ -26,7 +32,7 @@
                 {% endfor %}
             </select>
 
-            <label for="answer">Your Answer:</label>
+            <label for="answer" class="field-label">💬 Your Answer:</label>
             <textarea 
                 name="answer" 
                 id="answer" 

@@ -11,8 +11,12 @@
     {% include '_navbar.html' %}
 
     <div class="container">
-        <h1>🔄 Follow-up Question</h1>
-        <p class="subtitle">{{ company }} • {{ role }} • {{ difficulty }}</p>
+        <h1><span class="icon-pop">🔄</span> Follow-up Question</h1>
+        <div class="meta-bar">
+            <span class="meta-pill">🏢 <b>{{ company }}</b></span>
+            <span class="meta-pill">💼 <b>{{ role }}</b></span>
+            <span class="meta-pill">📈 <b>{{ difficulty }}</b></span>
+        </div>
 
         <div class="card">
             <h3>❓ Original Question</h3>
@@ -34,7 +38,7 @@
             <input type="hidden" name="answer" value="{{ original_answer }}">
             <input type="hidden" name="followup_question" value="{{ followup_question }}">
 
-            <label for="followup_answer">Your Answer to Follow-up:</label>
+            <label for="followup_answer" class="field-label">💬 Your Answer to Follow-up:</label>
             <textarea
               name="followup_answer"
               id="followup_answer"

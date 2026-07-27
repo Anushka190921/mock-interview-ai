@@ -11,12 +11,13 @@
     {% include '_navbar.html' %}
 
     <div class="container">
-        <h1>🎯 AI Mock Interview</h1>
+        <span class="eyebrow">Groq · Llama 3.3 70B</span>
+        <h1><span class="icon-pop">🎯</span> AI Mock Interview</h1>
         <p class="subtitle">Practice interviews powered by AI — get real feedback instantly</p>
         <a href="/history" class="back-link">📊 View Interview History</a>
 
         <form action="/interview" method="POST">
-            <label for="role">Select Job Role:</label>
+            <label for="role" class="field-label">💼 Select Job Role:</label>
         <select name="role" id="role" required>
             <option value="">-- Choose a role --</option>
             <option value="Software Engineer">Software Engineer</option>
@@ -36,7 +37,7 @@
             <option value="Full Stack Developer">Full Stack Developer</option>
 </select>
 
-<label for="difficulty">Select Difficulty Level:</label>
+<label for="difficulty" class="field-label">📈 Select Difficulty Level:</label>
 <select name="difficulty" id="difficulty" required>
     <option value="">-- Choose difficulty --</option>
     <option value="Fresher">Fresher (0-1 years)</option>
@@ -45,7 +46,7 @@
 </select>
 
 
-<label for="company">Select Company Style:</label>
+<label for="company" class="field-label">🏢 Select Company Style:</label>
 <select name="company" id="company" required>
     <option value="">-- Choose company --</option>
     <optgroup label="Product Companies">
