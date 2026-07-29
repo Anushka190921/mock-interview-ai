@@ -5,15 +5,30 @@ import io
 from utils.prompts import get_question_prompt, get_evaluation_prompt
 from dotenv import load_dotenv
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from utils.models import get_user_by_id, get_user_by_username, create_user
+from utils.models import (
+    get_user_by_id, get_user_by_username, create_user,
+    get_user_by_email, set_reset_token, get_user_by_reset_token, update_password
+)
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_mail import Mail, Message
+import secrets
+from datetime import datetime, timedelta
 import os
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
+
+# ─── Flask-Mail Setup ───────────────────────────────────────────────
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
+app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_USERNAME")
+mail = Mail(app)
 
 # ─── Flask-Login Setup ─────────────────────────────────────────────
 login_manager = LoginManager()
@@ -134,6 +149,73 @@ def login():
 def logout():
     logout_user()
     flash("You've been logged out.", "success")
+    return redirect(url_for("login"))
+
+
+# ─── Route: Forgot Password ────────────────────────────────────────
+@app.route("/forgot-password", methods=["GET", "POST"])
+@limiter.limit("5 per hour")
+def forgot_password():
+    if request.method == "GET":
+        return render_template("forgot_password.html")
+
+    email = request.form.get("email", "").strip()
+    user = get_user_by_email(email)
+
+    # Always show the same message whether or not the email exists,
+    # so this route can't be used to check which emails are registered.
+    if user:
+        token = secrets.token_urlsafe(32)
+        expiry = datetime.utcnow() + timedelta(hours=1)
+        set_reset_token(user.id, token, expiry)
+
+        reset_link = url_for("reset_password", token=token, _external=True)
+        try:
+            msg = Message(
+                subject="Reset your AI Mock Interview password",
+                recipients=[user.email],
+                body=(
+                    f"Hi {user.username},\n\n"
+                    f"We received a request to reset your password.\n"
+                    f"Click the link below to set a new one (valid for 1 hour):\n\n"
+                    f"{reset_link}\n\n"
+                    f"If you didn't request this, you can safely ignore this email."
+                )
+            )
+            mail.send(msg)
+        except Exception as e:
+            print("Email sending error:", e)
+
+    flash("If that email is registered, a reset link has been sent.", "success")
+    return redirect(url_for("login"))
+
+
+# ─── Route: Reset Password ──────────────────────────────────────────
+@app.route("/reset-password/<token>", methods=["GET", "POST"])
+@limiter.limit("10 per hour")
+def reset_password(token):
+    user = get_user_by_reset_token(token)
+
+    if not user:
+        flash("That reset link is invalid or has expired.", "error")
+        return redirect(url_for("forgot_password"))
+
+    if request.method == "GET":
+        return render_template("reset_password.html", token=token)
+
+    password = request.form.get("password", "")
+    confirm_password = request.form.get("confirm_password", "")
+
+    if password != confirm_password:
+        flash("Passwords do not match.", "error")
+        return render_template("reset_password.html", token=token)
+
+    if len(password) < 6:
+        flash("Password must be at least 6 characters.", "error")
+        return render_template("reset_password.html", token=token)
+
+    update_password(user.id, password)
+    flash("Your password has been reset. You can now log in.", "success")
     return redirect(url_for("login"))
 
 
@@ -320,3 +402,4 @@ def download_pdf():
 if __name__ == "__main__":
     debug_mode = os.getenv("FLASK_DEBUG", "False").lower() in ("true", "1", "yes")
     app.run(debug=debug_mode)
+    
