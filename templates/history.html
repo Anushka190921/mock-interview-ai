@@ -24,10 +24,18 @@
             <div class="meta-bar">
                 <span class="meta-pill">📁 <b>{{ records|length }}</b> session{{ 's' if records|length != 1 else '' }} recorded</span>
             </div>
+
+            {% if chart_scores|length >= 2 %}
+                <div class="card" style="padding: 24px 20px 12px;">
+                    <h3>📈 Score Trend</h3>
+                    <canvas id="scoreChart" height="90"></canvas>
+                </div>
+            {% endif %}
+
             {% for record in records %}
                 <div class="card">
                     <h3>{{ record.company }} • {{ record.role }} • {{ record.difficulty }}</h3>
-                    <div class="score-badge" style="margin-bottom: 10px;">🏆 Score: {{ record.score }}/10</div>
+                    <div class="score-badge" style="margin-bottom: 10px;">🏆 Score: {{ record.score }}</div>
                     <p><strong>Question:</strong> {{ record.question }}</p>
                     <p><strong>Date:</strong> {{ record.created_at }}</p>
                 </div>
@@ -36,6 +44,48 @@
 
         <a href="/" class="back-link">← Back to home</a>
     </div>
+
+    {% if chart_scores|length >= 2 %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+    <script>
+        const ctx = document.getElementById('scoreChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ chart_labels | tojson }},
+                datasets: [{
+                    label: 'Score (out of 10)',
+                    data: {{ chart_scores | tojson }},
+                    borderColor: '#2dd4bf',
+                    backgroundColor: 'rgba(45, 212, 191, 0.12)',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#2dd4bf',
+                    pointRadius: 4,
+                    tension: 0.3,
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 10,
+                        ticks: { color: '#8b96ad' },
+                        grid: { color: 'rgba(255,255,255,0.06)' }
+                    },
+                    x: {
+                        ticks: { color: '#8b96ad' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    </script>
+    {% endif %}
 
 </body>
 </html>

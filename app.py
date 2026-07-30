@@ -14,6 +14,7 @@ from flask_limiter.util import get_remote_address
 from flask_mail import Mail, Message
 import secrets
 from datetime import datetime, timedelta
+import re
 import os
 
 load_dotenv()
@@ -374,7 +375,29 @@ def history():
         print("Database error:", e)
         records = []
 
-    return render_template("history.html", records=records)
+    # Build chart data (oldest -> newest) from records with a numeric score.
+    # Scores are stored as free text like "8/10" or "N/A", so we pull out
+    # the first number we find and skip anything that isn't parseable.
+    chart_labels = []
+    chart_scores = []
+    for record in reversed(records):
+        match = re.search(r"(\d+(\.\d+)?)", record.get("score") or "")
+        if not match:
+            continue
+        created_at = record.get("created_at")
+        if hasattr(created_at, "strftime"):
+            label = created_at.strftime("%b %d")
+        else:
+            label = str(created_at)
+        chart_labels.append(label)
+        chart_scores.append(float(match.group(1)))
+
+    return render_template(
+        "history.html",
+        records=records,
+        chart_labels=chart_labels,
+        chart_scores=chart_scores,
+    )
 
 
 # ─── Route 6: Download PDF Report ─────────────────────────────────
