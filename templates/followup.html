@@ -39,20 +39,25 @@
             <input type="hidden" name="followup_question" value="{{ followup_question }}">
 
             <label for="followup_answer" class="field-label">💬 Your Answer to Follow-up:</label>
-            <textarea
-              name="followup_answer"
-              id="followup_answer"
-              rows="6"
-              maxlength="3000"
-              placeholder="Answer the follow-up question here... (max 3000 characters)"
-              required>
+            <div class="textarea-wrap">
+                <textarea
+                  name="followup_answer"
+                  id="followup_answer"
+                  rows="6"
+                  maxlength="3000"
+                  placeholder="Answer the follow-up question here... (max 3000 characters)"
+                  required>
 </textarea>
+                <button type="button" class="mic-btn" data-target="followup_answer" title="Start voice input">🎤</button>
+            </div>
 
             <button type="submit">Get Final Feedback →</button>
         </form>
 
         <a href="/interview" class="back-link">← Skip follow-up</a>
     </div>
+
+    <script src="{{ url_for('static', filename='js/voice-input.js') }}"></script>
 
 </body>
 </html>

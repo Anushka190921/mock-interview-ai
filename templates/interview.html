@@ -33,13 +33,16 @@
             </select>
 
             <label for="answer" class="field-label">💬 Your Answer:</label>
-            <textarea 
-                name="answer" 
-                id="answer" 
-                rows="8" 
-                placeholder="Type your answer here... be as detailed as possible"
-                required>
-            </textarea>
+            <div class="textarea-wrap">
+                <textarea 
+                    name="answer" 
+                    id="answer" 
+                    rows="8" 
+                    placeholder="Type your answer here... be as detailed as possible"
+                    required>
+                </textarea>
+                <button type="button" class="mic-btn" data-target="answer" title="Start voice input">🎤</button>
+            </div>
 
             <button type="submit">Get AI Feedback →</button>
 
@@ -47,6 +50,8 @@
 
         <a href="/" class="back-link">← Choose different role</a>
     </div>
+
+    <script src="{{ url_for('static', filename='js/voice-input.js') }}"></script>
 
 </body>
 </html>
